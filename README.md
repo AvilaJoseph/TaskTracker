@@ -3,10 +3,16 @@
 TaskTracker is a simple habit/task tracker built with **Jetpack Compose** (Material 3).  
 It supports creating, editing, deleting, and marking tasks as done. It also includes a **Progress & Insights** screen and the ability to **share progress as an image** using Android's share sheet.
 
+## Design / UI Credit (Important)
+
+**UI/visual design credit:** The layout and visual style are **not original**.  
+This project recreates a design/mockup I found online for learning/practice purposes.  
+If you know the original source/author, please open an issue/PR so proper attribution can be added.
+
 ## Features
 
 - Create habits/tasks
-- Edit habits/tasks (tap a task to open edit)
+- Edit habits/tasks
 - Mark task as done (toggle)
 - Delete task
 - Data persistence using **DataStore Preferences + Gson**
@@ -23,14 +29,6 @@ It supports creating, editing, deleting, and marking tasks as done. It also incl
 
 ---
 
-## Requirements
-
-- Android Studio (Hedgehog or newer recommended)
-- Android SDK 34
-- Gradle / Kotlin plugins as configured in the project
-
----
-
 ## Setup & Run
 
 1. Clone the repository
@@ -40,24 +38,13 @@ It supports creating, editing, deleting, and marking tasks as done. It also incl
 
 ---
 
-## Data Persistence
-
-Tasks are stored locally using **DataStore Preferences** in a JSON field (Gson).  
-Closing and reopening the app keeps tasks saved.
-
-> If you previously tested with sample data and want a clean start:
-- Uninstall the app and install again, or
-- Android Settings → Apps → TaskTracker → Storage → **Clear storage**
-
----
-
 ## Share Progress (Image)
 
 The **Share Progress** button shares a PNG image using `FileProvider`.
 
-### Required AndroidManifest provider
+### AndroidManifest provider
 
-Make sure this exists inside `<application>`:
+Inside `<application>`:
 
 ```xml
 <provider
@@ -71,9 +58,9 @@ Make sure this exists inside `<application>`:
 </provider>
 ```
 
-### Required file paths XML
+### `file_paths.xml`
 
-Create this file:
+Create:
 
 `app/src/main/res/xml/file_paths.xml`
 
@@ -84,37 +71,37 @@ Create this file:
 </paths>
 ```
 
-### How it works
-
-- Captures the current progress screen as a Bitmap (the screen is attached to the window)
-- Saves it to `cacheDir/shared_images/`
-- Shares it via the system share sheet (`ACTION_SEND`, `image/png`)
-
 ---
 
-## Project Structure (Simplified)
+## Where to upload the APK (so others can test)
 
-- `model/Task.kt` – Task model + categories
-- `data/TaskLocalDataStore.kt` – DataStore + Gson serialization
-- `ui/MainActivity.kt` – Main UI + navigation
-- `ui/RoutineItem.kt` – Task row UI
-- `ui/ProgressScreen.kt` – Progress UI + share button
-- `ui/ShareImage.kt` – Save bitmap and share using FileProvider
-- `ui/ContextExt.kt` – helper to get Activity from Context
-- `ui/ComposeViewCapture.kt` – captures root view into Bitmap
+You have a few good options:
 
----
+### Option A — GitHub Releases (recommended if your code is on GitHub)
+1. Build a release APK:
+    - Android Studio: **Build → Generate Signed Bundle / APK → APK**
+2. In GitHub:
+    - Go to your repo → **Releases** → **Draft a new release**
+    - Upload the `app-release.apk`
+3. Share the Release link. People can download the APK from there.
 
-## Troubleshooting
+### Option B — Firebase App Distribution (best tester experience)
+Great for sharing to testers with install links and update notifications.
+- Create a Firebase project → enable **App Distribution**
+- Upload the APK/AAB
+- Add tester emails (or invite link depending on your setup)
 
-### Share button does nothing / no share sheet appears
-- Make sure you have apps installed that can receive images (e.g., Photos, Gmail, WhatsApp)
-- Verify `FileProvider` authority matches the code
-- Verify `res/xml/file_paths.xml` exists
+### Option C — Google Play Internal testing / Closed testing
+Best if you want “real” Play Store install flow.
+- Upload an AAB
+- Create an internal/closed testing track
+- Invite testers via email / link
 
-### App crashes when sharing
-- Usually caused by a mismatched FileProvider authority or missing `file_paths.xml`
-- Check Logcat for `FileProvider` or `TaskTrackerShare` errors
+### Option D — Direct file hosting (quick & simple)
+- Google Drive / Dropbox / OneDrive
+- Upload the APK and set sharing to “Anyone with the link”
+
+> Tip: For safety, always tell testers to only install APKs from sources they trust.
 
 ---
 
